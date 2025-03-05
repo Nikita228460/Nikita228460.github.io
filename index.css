@@ -1,0 +1,39 @@
+.button {
+    height: 100px;
+    width: 100px;
+    border-radius: 100px;
+    overflow: hidden;
+    padding: 0;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.button:hover {
+    transform: scale(1.05);
+}
+
+.button:active {
+    transform: scale(0.95);
+}
+
+.button img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+h1 {
+    font-family: 'Arial', sans-serif;
+    font-size: 3em;
+    color: #FF5733;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 20px 0;
+    transition: color 0.3s ease;
+}
+
+h1:hover {
+    color: #C70039;
+}
