@@ -12,6 +12,14 @@ body {
     background-color: #f0f0f0;
 }
 
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 .roulette-container {
     position: relative;
 }
@@ -64,9 +72,7 @@ button {
 
 .upgrade {
     display: block;
-    flex-direction: row;
-    gap: 50px;
-    margin-top: 500px;
+    margin-top: 20px;
 }
 
 .upgrade > img {

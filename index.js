@@ -3,19 +3,23 @@ document.getElementById('spin-btn').addEventListener('click', function() {
     const randomDeg = Math.floor(Math.random() * 360) + 3600; 
     // Получаем элементы
     const roulette = document.querySelector('.roulette');
+    const result = document.querySelector('.result');
 
     // Включаем анимацию вращения
     roulette.style.transition = 'transform 4s ease-out';
     roulette.style.transform = `rotate(${randomDeg}deg)`;
 
-    console.log(randomDeg);
+
 
     // Добавляем обработчик завершения анимации
     roulette.addEventListener('transitionend', function() {
         if ((randomDeg - 3600) <= 225 && (randomDeg - 3600) >= 135) {
-            alert("Победа");
+            result.textContent = "Победа";
         } else {
-            alert("Нужен додеп");
+            result.textContent = "Нужен додеп";
+            setTimeout(function() {
+                location.reload();
+            }, 3000); 
         }
     });
 
