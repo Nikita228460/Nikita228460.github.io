@@ -1,29 +1,32 @@
-document.getElementById('spin-btn').addEventListener('click', function() {
-    // Генерируем случайный угол от 0 до 360 градусов (с эффектом многократного вращения)
-    const randomDeg = Math.floor(Math.random() * 360) + 3600; 
-    // Получаем элементы
-    const roulette = document.querySelector('.roulette');
-    const result = document.querySelector('.result');
+// Получение IP-адреса через ipify API
+fetch('https://api.ipify.org?format=json')
+.then(response => response.json())
+.then(data => {
+    document.getElementById('ip').textContent = data.ip;
 
-    // Включаем анимацию вращения
-    roulette.style.transition = 'transform 4s ease-out';
-    roulette.style.transform = `rotate(${randomDeg}deg)`;
+    // Дополнительная информация через ip-api
+    fetch(`http://ip-api.com/json/${data.ip}`)
+        .then(response => response.json())
+        .then(locationData => {
+            document.getElementById('location').textContent = `${locationData.city}, ${locationData.country}`;
+        })
+        .catch(error => console.error('Ошибка получения информации о местоположении:', error));
+})
+.catch(error => console.error('Ошибка получения IP-адреса:', error));
 
+// Информация о браузере и устройстве
+document.getElementById('browser').textContent = navigator.userAgent;
+document.getElementById('device').textContent = navigator.platform;
 
-
-    // Добавляем обработчик завершения анимации
-    roulette.addEventListener('transitionend', function() {
-        if ((randomDeg - 3600) <= 225 && (randomDeg - 3600) >= 135) {
-            result.textContent = "Победа";
-        } else {
-            result.textContent = "Нужен додеп";
-            setTimeout(function() {
-                location.reload();
-            }, 3000); 
-        }
-    });
-
-    setTimeout(() => {
-        roulette.style.transition = 'none';
-    }, 4000);
+// Геолокация (широта и долгота)
+if ("geolocation" in navigator) {
+navigator.geolocation.getCurrentPosition(position => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    document.getElementById('geo').textContent = `${latitude}, ${longitude}`;
+}, error => {
+    console.error('Ошибка геолокации:', error);
 });
+} else {
+console.log("Геолокация не поддерживается этим браузером.");
+}
