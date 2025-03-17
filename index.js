@@ -1,32 +1,27 @@
-// Получение IP-адреса через ipify API
 fetch('https://api.ipify.org?format=json')
-.then(response => response.json())
-.then(data => {
-    document.getElementById('ip').textContent = data.ip;
+  .then(response => response.json())
+  .then(data => {
 
-    // Дополнительная информация через ip-api
     fetch(`http://ip-api.com/json/${data.ip}`)
-        .then(response => response.json())
-        .then(locationData => {
-            document.getElementById('location').textContent = `${locationData.city}, ${locationData.country}`;
-        })
-        .catch(error => console.error('Ошибка получения информации о местоположении:', error));
-})
-.catch(error => console.error('Ошибка получения IP-адреса:', error));
+      .then(response => response.json())
+      .then(info => {
+        console.log(info);
+      })
+      .catch(error => console.error('Ошибка при запросе к ip-api:', error));
+  })
+  .catch(error => console.error('Ошибка при запросе к ipify:', error));
 
-// Информация о браузере и устройстве
-document.getElementById('browser').textContent = navigator.userAgent;
-document.getElementById('device').textContent = navigator.platform;
-
-// Геолокация (широта и долгота)
-if ("geolocation" in navigator) {
-navigator.geolocation.getCurrentPosition(position => {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    document.getElementById('geo').textContent = `${latitude}, ${longitude}`;
-}, error => {
-    console.error('Ошибка геолокации:', error);
-});
-} else {
-console.log("Геолокация не поддерживается этим браузером.");
-}
+  if ("geolocation" in navigator) {
+    // Если поддерживается геолокация
+    navigator.geolocation.getCurrentPosition(function(position) {
+      // Успешный ответ
+      console.log("Широта: " + position.coords.latitude);
+      console.log("Долгота: " + position.coords.longitude);
+    }, function(error) {
+      // Ошибка получения геопозиции
+      console.error("Ошибка получения геопозиции: " + error.message);
+    });
+  } else {
+    console.log("Геолокация не поддерживается этим браузером.");
+  }
+  
