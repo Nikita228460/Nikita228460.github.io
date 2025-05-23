@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import Button from './Button.tsx';
 import Input from './Input.tsx';
+import History from './History.tsx';
 
 function Calculator() {
   const [input, setInput] = useState('0');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [history, setHistory] = useState<string[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   const handleClick = (value: string) => {
     if (value === 'C') {
@@ -14,6 +17,8 @@ function Calculator() {
     } else if (value === '=') {
       try {
         const result = eval(input);
+        const calculation = `${input} = ${result}`;
+        setHistory(prev => [calculation, ...prev].slice(0, 10)); // Keep last 10 items
         setInput(result.toString());
       } catch {
         setInput('Ошибка');
@@ -27,6 +32,16 @@ function Calculator() {
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
+
+  const toggleHistory = () => {
+    setShowHistory(prev => !prev);
+  };
+
+  const handleHistorySelect = (item: string) => {
+    const expression = item.split(' = ')[0];
+    setInput(expression);
+    setShowHistory(false);
   };
 
   useEffect(() => {
@@ -69,32 +84,65 @@ function Calculator() {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      transition: 'all 0.3s ease'
+      transition: 'all 0.3s ease',
+      position: 'relative'
     }}>
-      <button 
-        onClick={toggleTheme}
-        style={{
-          marginBottom: '20px',
-          padding: '10px 20px',
-          backgroundColor: theme === 'light' ? '#e0e0e0' : '#555',
-          color: theme === 'light' ? '#333' : '#f5f5f5',
-          border: 'none',
-          borderRadius: '6px',
-          cursor: 'pointer',
-          transition: 'all 0.3s ease',
-          fontSize: '16px'
-        }}
-      >
-        {theme === 'light' ? 'Темная тема' : 'Светлая тема'}
-      </button>
+      <div style={{
+        position: 'absolute',
+        top: '20px',
+        right: '20px',
+        display: 'flex',
+        gap: '10px'
+      }}>
+        <button 
+          onClick={toggleTheme}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: theme === 'light' ? '#e0e0e0' : '#555',
+            color: theme === 'light' ? '#333' : '#f5f5f5',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            fontSize: '16px'
+          }}
+        >
+          {theme === 'light' ? 'Темная тема' : 'Светлая тема'}
+        </button>
+        <button 
+          onClick={toggleHistory}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: theme === 'light' ? '#e0e0e0' : '#555',
+            color: theme === 'light' ? '#333' : '#f5f5f5',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            fontSize: '16px'
+          }}
+        >
+          История
+        </button>
+      </div>
       
       <div style={{
         width: '320px',
         backgroundColor: theme === 'light' ? '#fff' : '#444',
         borderRadius: '12px',
         padding: '20px',
-        boxShadow: '0 6px 12px rgba(0,0,0,0.15)'
+        boxShadow: '0 6px 12px rgba(0,0,0,0.15)',
+        position: 'relative'
       }}>
+        {showHistory && (
+          <History 
+            items={history} 
+            theme={theme} 
+            onSelect={handleHistorySelect}
+            onClose={() => setShowHistory(false)}
+          />
+        )}
+        
         <Input value={input} theme={theme} />
         
         <div style={{
