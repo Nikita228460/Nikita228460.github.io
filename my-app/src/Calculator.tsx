@@ -7,7 +7,6 @@ function Calculator() {
   const [input, setInput] = useState('0');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [history, setHistory] = useState<string[]>([]);
-  const [showHistory, setShowHistory] = useState(false);
 
   const handleClick = (value: string) => {
     if (value === 'C') {
@@ -18,7 +17,7 @@ function Calculator() {
       try {
         const result = eval(input);
         const calculation = `${input} = ${result}`;
-        setHistory(prev => [calculation, ...prev].slice(0, 10)); // Keep last 10 items
+        setHistory(prev => [calculation, ...prev]);
         setInput(result.toString());
       } catch {
         setInput('Ошибка');
@@ -32,16 +31,6 @@ function Calculator() {
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
-  };
-
-  const toggleHistory = () => {
-    setShowHistory(prev => !prev);
-  };
-
-  const handleHistorySelect = (item: string) => {
-    const expression = item.split(' = ')[0];
-    setInput(expression);
-    setShowHistory(false);
   };
 
   useEffect(() => {
@@ -84,96 +73,72 @@ function Calculator() {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      transition: 'all 0.3s ease',
-      position: 'relative'
+      transition: 'all 0.3s ease'
     }}>
       <div style={{
-        position: 'absolute',
-        top: '20px',
-        right: '20px',
         display: 'flex',
-        gap: '10px'
+        gap: '20px',
+        alignItems: 'flex-start'
       }}>
-        <button 
-          onClick={toggleTheme}
-          style={{
-            padding: '10px 20px',
-            backgroundColor: theme === 'light' ? '#e0e0e0' : '#555',
-            color: theme === 'light' ? '#333' : '#f5f5f5',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            fontSize: '16px'
-          }}
-        >
-          {theme === 'light' ? 'Темная тема' : 'Светлая тема'}
-        </button>
-        <button 
-          onClick={toggleHistory}
-          style={{
-            padding: '10px 20px',
-            backgroundColor: theme === 'light' ? '#e0e0e0' : '#555',
-            color: theme === 'light' ? '#333' : '#f5f5f5',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            fontSize: '16px'
-          }}
-        >
-          История
-        </button>
-      </div>
-      
-      <div style={{
-        width: '320px',
-        backgroundColor: theme === 'light' ? '#fff' : '#444',
-        borderRadius: '12px',
-        padding: '20px',
-        boxShadow: '0 6px 12px rgba(0,0,0,0.15)',
-        position: 'relative'
-      }}>
-        {showHistory && (
-          <History 
-            items={history} 
-            theme={theme} 
-            onSelect={handleHistorySelect}
-            onClose={() => setShowHistory(false)}
-          />
-        )}
-        
-        <Input value={input} theme={theme} />
-        
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '10px',
-          marginTop: '20px'
+          width: '320px',
+          backgroundColor: theme === 'light' ? '#fff' : '#444',
+          borderRadius: '12px',
+          padding: '20px',
+          boxShadow: '0 6px 12px rgba(0,0,0,0.15)'
         }}>
-          <Button text="7" onClick={handleClick} theme={theme} />
-          <Button text="8" onClick={handleClick} theme={theme} />
-          <Button text="9" onClick={handleClick} theme={theme} />
-          <Button text="/" onClick={handleClick} theme={theme} />
+          <button 
+            onClick={toggleTheme}
+            style={{
+              marginBottom: '20px',
+              padding: '10px 20px',
+              backgroundColor: theme === 'light' ? '#e0e0e0' : '#555',
+              color: theme === 'light' ? '#333' : '#f5f5f5',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              fontSize: '16px',
+              width: '100%'
+            }}
+          >
+            {theme === 'light' ? 'Темная тема' : 'Светлая тема'}
+          </button>
           
-          <Button text="4" onClick={handleClick} theme={theme} />
-          <Button text="5" onClick={handleClick} theme={theme} />
-          <Button text="6" onClick={handleClick} theme={theme} />
-          <Button text="*" onClick={handleClick} theme={theme} />
+          <Input value={input} theme={theme} />
           
-          <Button text="1" onClick={handleClick} theme={theme} />
-          <Button text="2" onClick={handleClick} theme={theme} />
-          <Button text="3" onClick={handleClick} theme={theme} />
-          <Button text="-" onClick={handleClick} theme={theme} />
-          
-          <Button text="0" onClick={handleClick} theme={theme} />
-          <Button text="." onClick={handleClick} theme={theme} />
-          <Button text="⌫" onClick={handleClick} theme={theme} />
-          <Button text="+" onClick={handleClick} theme={theme} />
-          
-          <Button text="C" onClick={handleClick} theme={theme} wide />
-          <Button text="=" onClick={handleClick} theme={theme} wide />
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '10px',
+            marginTop: '20px'
+          }}>
+            <Button text="7" onClick={handleClick} theme={theme} />
+            <Button text="8" onClick={handleClick} theme={theme} />
+            <Button text="9" onClick={handleClick} theme={theme} />
+            <Button text="/" onClick={handleClick} theme={theme} />
+            
+            <Button text="4" onClick={handleClick} theme={theme} />
+            <Button text="5" onClick={handleClick} theme={theme} />
+            <Button text="6" onClick={handleClick} theme={theme} />
+            <Button text="*" onClick={handleClick} theme={theme} />
+            
+            <Button text="1" onClick={handleClick} theme={theme} />
+            <Button text="2" onClick={handleClick} theme={theme} />
+            <Button text="3" onClick={handleClick} theme={theme} />
+            <Button text="-" onClick={handleClick} theme={theme} />
+            
+            <Button text="0" onClick={handleClick} theme={theme} />
+            <Button text="." onClick={handleClick} theme={theme} />
+            <Button text="⌫" onClick={handleClick} theme={theme} />
+            <Button text="+" onClick={handleClick} theme={theme} />
+            
+            <Button text="C" onClick={handleClick} theme={theme} wide />
+            <Button text="=" onClick={handleClick} theme={theme} wide />
+          </div>
         </div>
+
+        <History items={history} theme={theme} />
       </div>
     </div>
   );
