@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gift Roulette | Рулетка подарков</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+
+<!-- Верхнее меню -->
+<header class="menu">
+    <div class="menu-buttons">
+        <button class="active" data-page="cases">
+            <i class="icon">🎁</i>
+            <span>Кейсы</span>
+        </button>
+        <button data-page="promo">
+            <i class="icon">🎟️</i>
+            <span>Промокоды</span>
+        </button>
+        <button data-page="profile">
+            <i class="icon">👤</i>
+            <span>Профиль</span>
+        </button>
+        <button data-page="deposit">
+            <i class="icon">💳</i>
+            <span>Депозит</span>
+        </button>
+    </div>
+    <div class="balance animate__animated animate__pulse animate__infinite animate__slower">
+        <span id="balance-value">0</span> ⭐️
+    </div>
+</header>
+
+<!-- Основной контент -->
+<main id="content">
+    <div class="content-wrapper">
+        <h2 class="page-title">Кейсы</h2>
+        <p class="page-subtitle">Тут будут карточки с кейсами</p>
+    </div>
+</main>
+
+<!-- Футер -->
+<footer class="site-footer">
+    <div class="footer-content">
+        <p>© 2025 Gift Roulette | Все права защищены</p>
+        <div class="social-links">
+            <a href="#" class="social-link">📱 Telegram</a>
+            <a href="#" class="social-link">📘 VK</a>
+        </div>
+    </div>
+</footer>
+
+<!-- Модальное окно (скрыто по умолчанию) -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div id="modal-body"></div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
